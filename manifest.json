@@ -1,0 +1,28 @@
+{
+    "manifest_version": 3,
+    "name": "D-mfuns",
+    "version": "0.1.0",
+    "description": "辅助使用Mfuns的工具",
+    "permissions":["downloads","tabs"],
+    "icons": {
+        "48": "images/mfuns.png"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*.mfuns.net/video/*"
+            ],
+            "js": [
+                "Dmfuns.js"
+            ]
+        }
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "D-mfuns\n辅助使用Mfuns的工具",
+        "permissions":["downloads"],
+        "default_icon": {
+        "48": "images/mfuns.png"
+    }
+    }
+}
