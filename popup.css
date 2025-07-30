@@ -59,6 +59,9 @@ body {
     user-select: none;
     cursor: pointer;
 }
+.videoButton span {
+    float: right;
+}
 #videoList {
     color: var(--color);
     width: 100%;
@@ -78,6 +81,7 @@ button {
     font-size: 0.8em;
     cursor: pointer;
     margin-bottom: 8px;
+    
 }
 .disabled {
     color: #aaaaaa;

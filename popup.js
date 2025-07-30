@@ -6,10 +6,7 @@ let downloadUrl = [];
 let videoNow
 let downloadClarity = [];
 
-chrome.tabs
-    .query({ currentWindow: true, active: true })
-    .then(tabs => {
-        // tabs[0].url 需要 `tabs` 权限或匹配的主机权限。
+chrome.tabs.query({ currentWindow: true, active: true }).then(tabs => {
         if (tabs[0].url.search(".mfuns.net/video/") !== -1) {
             getDataUrl()
         } else {
@@ -93,7 +90,7 @@ function getClarityList(el, id) {
         clarityData.innerText = `${data.videoUrl[id].list[i].name} ${data.videoUrl[id].list[i].label}`
         clarityData.onclick = () => {
             downloadClarity[videoNow] = i;
-            document.getElementById('video' + videoNow).innerText = data.videoUrl[videoNow].title + ' ' + `${data.videoUrl[videoNow].list[i].name} ${data.videoUrl[videoNow].list[i].label}`;
+            document.getElementById('video' + videoNow).innerHTML = (data.videoUrl[videoNow].title.length > 20 ? data.videoUrl[videoNow].title.substring(0,19)+'...' : data.videoUrl[videoNow].title) + ' ' + `${data.videoUrl[videoNow].list[i].name} ${data.videoUrl[videoNow].list[i].label} <span>${getSize(data.videoUrl[videoNow].list[i].size)}</span>`;
             Array.from(el.children).forEach(element => {
                 element.style.color = "#aaaaaa"
             });
@@ -109,7 +106,7 @@ function getVideoList(el, clarityList) {
     for (let i = 0; i < data.videoUrl.length; i++) {
         const videoData = document.createElement('div');
         videoData.className = 'videoButton'
-        videoData.innerText = data.videoUrl[i].title + ' ' + `${data.videoUrl[i].list[data.videoUrl[i].list.length - 1].name} ${data.videoUrl[i].list[data.videoUrl[i].list.length - 1].label}`;
+        videoData.innerHTML = (data.videoUrl[i].title.length > 20 ? data.videoUrl[i].title.substring(0,19)+'...' : data.videoUrl[i].title) + ' ' + `${data.videoUrl[i].list[data.videoUrl[i].list.length - 1].name} ${data.videoUrl[i].list[data.videoUrl[i].list.length - 1].label} <span>${getSize(data.videoUrl[i].list[data.videoUrl[i].list.length - 1].size)}</span>`;
         downloadUrl.push(0)
         downloadClarity.push(data.videoUrl[i].list.length - 1)
         videoData.id = 'video' + i
@@ -153,3 +150,10 @@ function clickCancel() {
     downButton.className = 'disabled'
 }
 
+function getSize(size){
+    size=size*1
+    if(size>=1024*1024*1024) return (size/(1024*1024*1024)).toFixed(2) + 'G'
+    if(size>=1024*1024) return (size/(1024*1024)).toFixed(2) + 'MB'
+    if(size>=1024) return (size/1024).toFixed(2) + 'KB'
+    return size + 'B'
+}
