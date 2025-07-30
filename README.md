@@ -11,8 +11,8 @@
 
 ## 使用
 
-通过下面方式下载压缩包，再导入浏览器即可。
-[123云盘](https://www.123684.com/s/fFb4jv-wRUBd)
+通过下面方式下载压缩包，再导入浏览器即可。<br>
+[123云盘](https://www.123684.com/s/fFb4jv-wRUBd)<br>
 [Github](https://github.com/YuiGasuki/D-mfuns/blob/main/resources/D-mfuns%200.1.0.7z)
 
 ## 说明
