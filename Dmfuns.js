@@ -23,7 +23,7 @@ function getVideoUrl(videoLocation, informationData) {
 }
 
 document.body.innerHTML += `
-<div id='Dmfuns' style='position: fixed;right: 16px;top: 60px;transform: translateY(25%);padding:6px 10px;border-radius: 4px;opacity: 0;z-index: 99999999;color: #A78BFA;background: white;box-shadow: 0px 0px 2px black;display:none'>
+<div id='Dmfuns' style='position: fixed;right: 16px;top: 90px;transform: translateY(25%);padding:6px 10px;border-radius: 4px;opacity: 0;z-index: 99999999;color: #A78BFA;background: white;box-shadow: 0px 0px 2px black;display:none'>
 下载列表
 </div>`
 const Dmfuns = document.getElementById('Dmfuns');

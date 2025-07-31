@@ -77,7 +77,6 @@ body {
     width: 100%;
     padding-top: 8px;
     background: var(--background);
-    box-shadow: 0px 0px 4px black;
 }
 button {
     border-style: solid;
@@ -103,5 +102,11 @@ button {
     color: #A78BFA;
     border-color: #A78BFA;
     opacity: 1;
+    display: block;
+}
+.disabledTrue {
+    color: #aaaaaa;
+    border-color: #aaaaaa;
+    opacity: 0.8;
     display: block;
 }

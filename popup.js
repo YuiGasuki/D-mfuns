@@ -3,7 +3,7 @@ let data
 
 let downloadList = [];
 let downloadUrl = [];
-let videoNow
+let videoNow, setAllIf = false
 let downloadClarity = [];
 
 chrome.tabs.query({ currentWindow: true, active: true }).then(tabs => {
@@ -45,22 +45,28 @@ function getDataUrl() {
                 const buttonBox = document.createElement('div');
                 const downButton = document.createElement('button');
                 downButton.id = 'downButton';
-                downButton.innerText = '下载选择'
+                downButton.innerText = '下载'
                 downButton.className = 'disabled'
                 downButton.onclick = () => getDownloadUrl()
                 buttonBox.appendChild(downButton)
                 const cancelButton = document.createElement('button');
                 cancelButton.id = 'cancelButton';
-                cancelButton.innerText = '取消选择'
+                cancelButton.innerText = '取消'
                 cancelButton.className = "disabled"
                 cancelButton.onclick = () => clickCancel()
                 buttonBox.appendChild(cancelButton)
                 const getallButton = document.createElement('button');
                 getallButton.id = 'getallButton';
-                getallButton.innerText = '全部选择'
-                getallButton.className = "disabledFalse"
+                getallButton.innerText = '全选'
+                getallButton.className = "disabledTrue"
                 getallButton.onclick = () => getAll()
                 buttonBox.appendChild(getallButton)
+                const setAllButton = document.createElement('button');
+                setAllButton.id = 'setAllButton';
+                setAllButton.innerText = '应用全部'
+                setAllButton.className = "disabledTrue"
+                setAllButton.onclick = () => setAll()
+                buttonBox.appendChild(setAllButton)
                 buttonBox.id = 'buttonBox'
                 document.body.appendChild(buttonBox)
                 videoList.style.marginBottom = `${buttonBox.offsetHeight + 8}px`
@@ -96,8 +102,16 @@ function getClarityList(el, id) {
         clarityData.className = 'clarityButton'
         clarityData.innerText = `${data.videoUrl[id].list[i].name} ${data.videoUrl[id].list[i].label}`
         clarityData.onclick = () => {
-            downloadClarity[videoNow] = i;
-            document.getElementById('video' + videoNow).innerHTML = (data.videoUrl[videoNow].title.length > 20 ? data.videoUrl[videoNow].title.substring(0, 19) + '...' : data.videoUrl[videoNow].title) + ' ' + `${data.videoUrl[videoNow].list[i].name} ${data.videoUrl[videoNow].list[i].label}<br><span>${getSize(data.videoUrl[videoNow].list[i].size)}</span>`;
+            if (setAllIf) {
+                for (let li = 0; li < downloadUrl.length; li++) {
+                    downloadClarity[li] = i;
+                    document.getElementById('video' + li).innerHTML = (data.videoUrl[li].title.length > 20 ? data.videoUrl[li].title.substring(0, 19) + '...' : data.videoUrl[li].title) + ' ' + `${data.videoUrl[li].list[i].name} ${data.videoUrl[li].list[i].label}<br><span>${getSize(data.videoUrl[li].list[i].size)}</span>`;
+
+                }
+            } else {
+                downloadClarity[videoNow] = i;
+                document.getElementById('video' + videoNow).innerHTML = (data.videoUrl[videoNow].title.length > 20 ? data.videoUrl[videoNow].title.substring(0, 19) + '...' : data.videoUrl[videoNow].title) + ' ' + `${data.videoUrl[videoNow].list[i].name} ${data.videoUrl[videoNow].list[i].label}<br><span>${getSize(data.videoUrl[videoNow].list[i].size)}</span>`;
+            }
             Array.from(el.children).forEach(element => {
                 element.style.color = "#aaaaaa"
             });
@@ -109,6 +123,17 @@ function getClarityList(el, id) {
         el.appendChild(clarityData)
     }
 }
+
+function setAll() {
+    if (!setAllIf) {
+        setAllIf = true
+        setAllButton.className = "disabledFalse"
+    } else {
+        setAllIf = false
+        setAllButton.className = "disabledTrue"
+    }
+}
+
 function getVideoList(el, clarityList) {
     for (let i = 0; i < data.videoUrl.length; i++) {
         const videoData = document.createElement('div');
@@ -134,7 +159,7 @@ function getVideoList(el, clarityList) {
                 }
             }
             getallButton.className = 'disabledFalse'
-            getallButton.innerText = "全部取消"
+            getallButton.innerText = "取消全选"
             getallButton.onclick = () => getAllCancel(getallButton)
         }
         el.appendChild(videoData)
@@ -142,25 +167,31 @@ function getVideoList(el, clarityList) {
 }
 
 function getAll() {
-    for (let i = 0; i < data.videoUrl.length; i++) {
+    for (let i = downloadUrl.length-1; i >=0 ; i=i-1) {
+        if(downloadUrl[i]===0){
         document.getElementById('video' + i).onclick();
+        }
     }
-    getallButton.innerText = "全部取消"
+    getallButton.className = 'disabledFalse'
+    getallButton.innerText = "取消全选"
     getallButton.onclick = () => getAllCancel(getallButton)
 }
 
 function getAllCancel(el) {
     for (let i = 0; i < downloadUrl.length; i++) {
+        if(downloadUrl[i]===1){
         downloadUrl[i] = 0
         const videoData = document.getElementById('video' + i)
         videoData.style.borderColor = '#aaaaaa'
         videoData.style.color = '#aaaaaa'
-        videoNow = null;
+        }
     }
+    videoNow = null;
     document.getElementById('clarityList').innerHTML = `<div class='clarityButton'>无</div>`
     cancelButton.className = "disabled"
     downButton.className = 'disabled'
-    el.innerText = "全部选择"
+    el.className = "disabledTrue"
+    el.innerText = "全选"
     el.onclick = () => getAll()
 }
 
@@ -175,14 +206,13 @@ function clickCancel() {
     for (let i = 0; i < downloadUrl.length; i++) {
         if (downloadUrl[i] === 1) {
             cancelButton.className = 'disabled'
-            getallButton.className = 'disabled'
             return
         }
     }
     cancelButton.className = "disabled"
     downButton.className = 'disabled'
-    getallButton.className = 'disabledFalse'
-    getallButton.innerText = "全部选择"
+    getallButton.className = 'disabledTrue'
+    getallButton.innerText = "全选"
     getallButton.onclick = () => getAll()
 }
 
