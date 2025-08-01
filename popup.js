@@ -20,8 +20,8 @@ function getDataUrl() {
         currentWindow: true
     }, (tabs) => {
         chrome.tabs.sendMessage(tabs[0].id, 'hi').then(res => {
-            if (res === undefined) {
-                document.body.innerHTML = `<p class='warn'>页面还没有加载完成(っ °Д °;)っ</p>`
+            if (res === 'no') {
+                document.body.innerHTML = `<p class='warn'>请登录账号使用￣へ￣</p>`
             } else {
                 data = res
                 const img = document.createElement('img');
