@@ -36,6 +36,9 @@ function DMgetVideoUrl(videoLocation, informationData) {
 
     return urlList
 }
+
+
+
 document.body.innerHTML += `
 <div id='Dmfuns' style='position: fixed;right: 16px;top: 90px;transform: translateY(25%);padding:6px 10px;border-radius: 4px;opacity: 0;z-index: 99999999;color: #A78BFA;background: white;box-shadow: 0px 0px 2px black;display:none'>
 下载列表
@@ -43,9 +46,9 @@ document.body.innerHTML += `
 const Dmfuns = document.getElementById('Dmfuns');
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request === 'hi') {
-        if (DMgetCookie() === "no"){
+        if (DMgetCookie() === "no") {
             sendResponse('no')
-        }else{
+        } else {
             const informationData = JSON.parse(document.getElementById("__NUXT_DATA__").innerText);
             let videoLocationList = informationData[informationData[informationData[informationData[informationData[0][1]].data][1]]['video:' + window.location.href.split('video/')[1]]]
             const videoInfor = {
@@ -58,6 +61,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             sendResponse(videoInfor)
         }
     } else {
+        if(document.getElementsByClassName('m-video-side-action-item')[0].children[0].className==="m-icon vertical m-like-action icon"){
+                document.getElementsByClassName('m-video-side-action-item')[0].children[0].click()
+        }
         for (let i = 0; i < request.length; i++) {
             DMgetVideo(request[i].url, request[i].title, request.length)
         }

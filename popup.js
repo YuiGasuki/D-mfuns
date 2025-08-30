@@ -72,7 +72,7 @@ function getDataUrl() {
                 videoList.style.marginBottom = `${buttonBox.offsetHeight + 8}px`
             }
         }).catch(error => {
-            document.body.innerHTML = `<p class='warn'>少女祈祷中...</p>`
+            document.body.innerHTML = `<p class='warn'>等待网页加载，请重试</p>`
         })
 
         function getDownloadUrl() {
@@ -167,9 +167,9 @@ function getVideoList(el, clarityList) {
 }
 
 function getAll() {
-    for (let i = downloadUrl.length-1; i >=0 ; i=i-1) {
-        if(downloadUrl[i]===0){
-        document.getElementById('video' + i).onclick();
+    for (let i = downloadUrl.length - 1; i >= 0; i = i - 1) {
+        if (downloadUrl[i] === 0) {
+            document.getElementById('video' + i).onclick();
         }
     }
     getallButton.className = 'disabledFalse'
@@ -179,11 +179,11 @@ function getAll() {
 
 function getAllCancel(el) {
     for (let i = 0; i < downloadUrl.length; i++) {
-        if(downloadUrl[i]===1){
-        downloadUrl[i] = 0
-        const videoData = document.getElementById('video' + i)
-        videoData.style.borderColor = '#aaaaaa'
-        videoData.style.color = '#aaaaaa'
+        if (downloadUrl[i] === 1) {
+            downloadUrl[i] = 0
+            const videoData = document.getElementById('video' + i)
+            videoData.style.borderColor = '#aaaaaa'
+            videoData.style.color = '#aaaaaa'
         }
     }
     videoNow = null;
