@@ -1,3 +1,4 @@
+let get_thumbs_up = true//关闭自动点赞请设置为false
 function DMgetCookie() {
     //return 'ok' //关闭登录验证
     let DMcookie = decodeURIComponent(document.cookie).split(';');
@@ -61,7 +62,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             sendResponse(videoInfor)
         }
     } else {
-        if(document.getElementsByClassName('m-video-side-action-item')[0].children[0].className==="m-icon vertical m-like-action icon"){
+        if(document.getElementsByClassName('m-video-side-action-item')[0].children[0].className==="m-icon vertical m-like-action icon"&&get_thumbs_up){
                 document.getElementsByClassName('m-video-side-action-item')[0].children[0].click()
         }
         for (let i = 0; i < request.length; i++) {
