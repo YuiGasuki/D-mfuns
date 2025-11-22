@@ -25,6 +25,7 @@ function getDataUrl() {
             } else {
                 data = res
                 const img = document.createElement('img');
+                console.log(data)
                 img.alt = data.title;
                 img.id = 'cover';
                 img.src = data.cover;
@@ -72,6 +73,7 @@ function getDataUrl() {
                 videoList.style.marginBottom = `${buttonBox.offsetHeight + 8}px`
             }
         }).catch(error => {
+            console.log(error)
             document.body.innerHTML = `<p class='warn'>等待网页加载，请重试</p>`
         })
 
@@ -217,6 +219,7 @@ function clickCancel() {
 }
 
 function getSize(size) {
+    if (size===0) return ""
     size = size * 1
     if (size >= 1024 * 1024 * 1024) return (size / (1024 * 1024 * 1024)).toFixed(2) + 'G'
     if (size >= 1024 * 1024) return (size / (1024 * 1024)).toFixed(2) + 'MB'

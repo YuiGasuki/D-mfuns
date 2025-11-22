@@ -13,29 +13,37 @@ function DMgetCookie() {
 }
 
 
-
-function DMgetVideoUrl(videoLocation, informationData) {
-    let urlList = []
-    for (let i = 0; i < informationData[videoLocation].length; i++) {
-        let N = informationData[informationData[informationData[videoLocation][i]].video_url];
-        let videoUrl = []
-        for (let il = 0; il < N.length; il++) {
-            let infor = informationData[N[il]]
-            videoUrl.push({
-                "name": informationData[infor.name],
-                "label": informationData[infor.label],
-                "url": informationData[infor.url],
-                "size": informationData[infor.size]
-            })
+let DmDPlayAddress = [];
+function DMgetVideoUrl() {
+    return new Promise(resolve => {
+        let urlList = []
+        if (DmDPlayAddress.length != 0){
+            resolve(DmDPlayAddress)
         }
-        urlList.push({
-            "title": informationData[informationData[informationData[videoLocation][i]].title],
-            "list": videoUrl
-        })
+        fetch(`https://api.mfuns.net/v1/video/getPlayAddress?id=${window.location.href.split('video/')[1]}`).then((response) => response.json()).then((data) => {
+            data = data.data.videos
+            for (let i = 0; i < data.length; i++) {
+                let N = data[i].video_url;
+                let videoUrl = []
+                for (let il = 0; il < N.length; il++) {
+                    videoUrl.push({
+                        "name": data[i].video_url[il].name,
+                        "label": data[i].video_url[il].label,
+                        "url": data[i].video_url[il].url,
+                        "size": data[i].video_url[il].size ? data[i].video_url[il].size : 0
+                    })
+                }
+                urlList.push({
+                    "title": data[i].title,
+                    "list": videoUrl
+                })
 
-    }
+            }
+            DmDPlayAddress = urlList
+            resolve(urlList)
+        }).catch((error) => console.error("Error:", error));
+    });
 
-    return urlList
 }
 
 
@@ -52,18 +60,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         } else {
             const informationData = JSON.parse(document.getElementById("__NUXT_DATA__").innerText);
             let videoLocationList = informationData[informationData[informationData[informationData[informationData[0][1]].data][1]]['video:' + window.location.href.split('video/')[1]]]
-            const videoInfor = {
-                "title": informationData[videoLocationList.title],
-                "P": informationData[videoLocationList.videos],
-                "videoUrl": DMgetVideoUrl(videoLocationList.videos, informationData),
-                "danmaku": `https://api.mfuns.net/v1/danmaku/get_normal?id=${window.location.href.split('video/')[1]}&part=1`,
-                "cover": `https://cdn.mfuns.net${informationData[videoLocationList.cover]}`
-            }
-            sendResponse(videoInfor)
+            DMgetVideoUrl().then(result => {
+                const videoInfor = {
+                    "title": informationData[videoLocationList.title],
+                    "P": informationData[videoLocationList.videos],
+                    "videoUrl":result,
+                    "danmaku": `https://api.mfuns.net/v1/danmaku/get_normal?id=${window.location.href.split('video/')[1]}&part=1`,
+                    "cover": `https://cdn.mfuns.net${informationData[videoLocationList.cover]}`
+                }
+                sendResponse(videoInfor)
+            })
         }
     } else {
-        if(document.getElementsByClassName('m-video-side-action-item')[0].children[0].className==="m-icon vertical m-like-action icon"&&get_thumbs_up){
-                document.getElementsByClassName('m-video-side-action-item')[0].children[0].click()
+        if (document.getElementsByClassName('m-video-side-action-item')[0].children[0].className === "m-icon vertical m-like-action pointer" && get_thumbs_up) {
+            document.getElementsByClassName('m-video-side-action-item')[0].children[0].click()
         }
         for (let i = 0; i < request.length; i++) {
             DMgetVideo(request[i].url, request[i].title, request.length)
@@ -75,6 +85,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         Dmfuns.style.opacity = 1
         sendResponse('ok')
     }
+    return true;
 })
 async function DMgetVideo(url, title, max) {
     const xhr = new XMLHttpRequest();
