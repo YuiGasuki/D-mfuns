@@ -1,4 +1,6 @@
-let get_thumbs_up = true//关闭自动点赞请设置为false
+let get_thumbs_up = false//关闭自动点赞请设置为false
+console.log("[D-mfuns]\n %cD-mfuns v1.5.0%chttps://github.com/YuiGasuki/D-mfuns","color: white; font-size: 12px; padding: 5px 7px; border-radius: 3px 0px 0px 3px;background-color: #A78BFA;margin-bottom:16px","font-size: 12px; padding: 5px;border-radius: 0px 3px 3px 0px;background-color: white;")
+
 function DMgetCookie() {
     //return 'ok' //关闭登录验证
     let DMcookie = decodeURIComponent(document.cookie).split(';');
@@ -76,13 +78,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             document.getElementsByClassName('m-video-side-action-item')[0].children[0].click()
         }
         for (let i = 0; i < request.length; i++) {
-            DMgetVideo(request[i].url, request[i].title, request.length)
+            window.open(request[i].url)
+            //DMgetVideo(request[i].url, request[i].title, request.length)
         }
+        /*
         Dmfuns.style.display = "grid"
         console.log(Dmfuns.offsetHeight)//不能删除
         Dmfuns.style.transition = '0.5s'
         Dmfuns.style.transform = 'translateY(0%)';
         Dmfuns.style.opacity = 1
+        */
         sendResponse('ok')
     }
     return true;
@@ -91,6 +96,7 @@ async function DMgetVideo(url, title, max) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'blob';
+    xhr.withCredentials = true;
     const div = document.createElement('div')
     xhr.onprogress = function (event) {
         if (event.lengthComputable) {
