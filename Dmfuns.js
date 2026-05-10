@@ -1,5 +1,5 @@
-let get_thumbs_up = false//关闭自动点赞请设置为false
-console.log("[D-mfuns]\n %cD-mfuns v1.5.0%chttps://github.com/YuiGasuki/D-mfuns","color: white; font-size: 12px; padding: 5px 7px; border-radius: 3px 0px 0px 3px;background-color: #A78BFA;margin-bottom:16px","font-size: 12px; padding: 5px;border-radius: 0px 3px 3px 0px;background-color: white;")
+let get_thumbs_up = true//关闭自动点赞请设置为false
+console.log("[D-mfuns]\n %cD-mfuns v1.5.0%chttps://github.com/YuiGasuki/D-mfuns", "color: white; font-size: 12px; padding: 5px 7px; border-radius: 3px 0px 0px 3px;background-color: #A78BFA;margin-bottom:16px", "font-size: 12px; padding: 5px;border-radius: 0px 3px 3px 0px;background-color: white;")
 
 function DMgetCookie() {
     //return 'ok' //关闭登录验证
@@ -19,7 +19,7 @@ let DmDPlayAddress = [];
 function DMgetVideoUrl() {
     return new Promise(resolve => {
         let urlList = []
-        if (DmDPlayAddress.length != 0){
+        if (DmDPlayAddress.length != 0) {
             resolve(DmDPlayAddress)
         }
         fetch(`https://api.mfuns.net/v1/video/getPlayAddress?id=${window.location.href.split('video/')[1]}`).then((response) => response.json()).then((data) => {
@@ -50,10 +50,11 @@ function DMgetVideoUrl() {
 
 
 
-document.body.innerHTML += `
+/*document.body.innerHTML += `
 <div id='Dmfuns' style='position: fixed;right: 16px;top: 90px;transform: translateY(25%);padding:6px 10px;border-radius: 4px;opacity: 0;z-index: 99999999;color: #A78BFA;background: white;box-shadow: 0px 0px 2px black;display:none'>
 下载列表
 </div>`
+*/
 const Dmfuns = document.getElementById('Dmfuns');
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request === 'hi') {
@@ -66,7 +67,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 const videoInfor = {
                     "title": informationData[videoLocationList.title],
                     "P": informationData[videoLocationList.videos],
-                    "videoUrl":result,
+                    "videoUrl": result,
                     "danmaku": `https://api.mfuns.net/v1/danmaku/get_normal?id=${window.location.href.split('video/')[1]}&part=1`,
                     "cover": `https://cdn.mfuns.net${informationData[videoLocationList.cover]}`
                 }
@@ -76,10 +77,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     } else {
         if (document.getElementsByClassName('m-video-side-action-item')[0].children[0].className === "m-icon vertical m-like-action pointer" && get_thumbs_up) {
             document.getElementsByClassName('m-video-side-action-item')[0].children[0].click()
-        }
-        for (let i = 0; i < request.length; i++) {
-            window.open(request[i].url)
-            //DMgetVideo(request[i].url, request[i].title, request.length)
         }
         /*
         Dmfuns.style.display = "grid"
@@ -92,7 +89,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
     return true;
 })
+
+/*
 async function DMgetVideo(url, title, max) {
+
+    return
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'blob';
@@ -129,3 +130,4 @@ async function DMgetVideo(url, title, max) {
     Dmfuns.appendChild(div)
     xhr.send();
 }
+*/

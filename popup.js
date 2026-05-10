@@ -78,7 +78,6 @@ function getDataUrl() {
         })
 
         function getDownloadUrl() {
-            downloadList = [];
             for (let i = 0; i < downloadUrl.length; i++) {
                 if (downloadUrl[i] === 1) {
                     document.getElementById('video' + i).onclick = null;
@@ -86,13 +85,13 @@ function getDataUrl() {
                     document.getElementById('video' + i).style.color = '#A78BFA'
                     document.getElementById('video' + i).style.opacity = 0.5
                     downloadUrl[i] = 2
-                    downloadList.push({
-                        "url": data.videoUrl[i].list[downloadClarity[i]].url,
-                        "title": data.videoUrl[i].title + ' ' + data.videoUrl[i].list[downloadClarity[i]].name + '.mp4'
+                    chrome.downloads.download({
+                        url: data.videoUrl[i].list[downloadClarity[i]].url,
+                        filename: data.videoUrl[i].title + ' ' + data.videoUrl[i].list[downloadClarity[i]].name + '.mp4'
                     })
                 }
             }
-            chrome.tabs.sendMessage(tabs[0].id, downloadList)
+            chrome.tabs.sendMessage(tabs[0].id, "downloadSignal")
         }
 
     })
@@ -219,7 +218,7 @@ function clickCancel() {
 }
 
 function getSize(size) {
-    if (size===0) return ""
+    if (size === 0) return ""
     size = size * 1
     if (size >= 1024 * 1024 * 1024) return (size / (1024 * 1024 * 1024)).toFixed(2) + 'G'
     if (size >= 1024 * 1024) return (size / (1024 * 1024)).toFixed(2) + 'MB'
