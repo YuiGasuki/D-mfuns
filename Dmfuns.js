@@ -22,7 +22,12 @@ function DMgetVideoUrl() {
         if (DmDPlayAddress.length != 0) {
             resolve(DmDPlayAddress)
         }
-        fetch(`https://api.mfuns.net/v1/video/getPlayAddress?id=${window.location.href.split('video/')[1]}`).then((response) => response.json()).then((data) => {
+        fetch(`https://api.mfuns.net/v1/video/getPlayAddress?id=${window.location.href.split('video/')[1]}`, {
+            "method": 'GET',
+            "headers": {
+                'Authorization': 'RlNiV3AwZWVnOGI2JmlkJjc0NDQwJjQ4NTlmYWYyYTAxNDEwYjk3ZWY0YWEyNjM5ZDVhMDU2'
+            }
+        }).then((response) => response.json()).then((data) => {
             data = data.data.videos
             for (let i = 0; i < data.length; i++) {
                 let N = data[i].video_url;
