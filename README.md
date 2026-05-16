@@ -12,9 +12,9 @@
 ## 使用
 
 通过下面方式下载压缩包，再导入浏览器即可。<br>
-[123云盘](https://www.123684.com/s/fFb4jv-wRUBd)<br>
-[Github](https://github.com/YuiGasuki/D-mfuns/releases)
-
+[蓝奏云](https://wwbld.lanzouw.com/b009i25f9a)  密码:***djrd***<br>
+[Github](https://github.com/YuiGasuki/D-mfuns/releases)<br>
+[123云盘](https://www.123684.com/s/fFb4jv-wRUBd)
 ## 说明
 
 下载列表中字体变蓝即为要下载的视频。边框变蓝是选择当前视频，可以进行操作，如修改清晰度和取消下载。
